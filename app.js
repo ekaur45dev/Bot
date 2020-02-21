@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 app.use("/api", routes)
 app.use('/api-docs', swaggerUi.serve);
 app.get('/api-docs', swaggerUi.setup(swaggerDocument));
-//app.get("/", (req, res) => { res.send("<h1>Api running...</h1>") })
+app.get("/", (req, res) => { res.send("<h1>Api running...</h1>") })
 app.use(controllerRoutes);
 app.get("**", (req, res) => { res.sendFile(path.join(__dirname + "/web/pages/error.html")) })
 try {
