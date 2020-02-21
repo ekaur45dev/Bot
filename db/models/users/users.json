@@ -1,0 +1,10 @@
+{
+    "users":[
+        {
+            "firstName":"Aqeel",
+            "midleInit": "ur",
+            "lastname":"Ahmad",
+            "age":23
+        }
+    ]
+}

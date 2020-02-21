@@ -4,12 +4,12 @@ const controllerRoutes = require('./routes/controllers/routes');
 var bodyParser = require('body-parser');
 var path = require('path');
 const dotenv = require('dotenv');
-const swaggerUi=require("swagger-ui-express");
+const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require('./swagger.json');
 dotenv.config();
 var app = express();
 const http = require("http").createServer(app);
-app.use('/assets', express.static(path.join(__dirname,'web/assets')))
+app.use('/assets', express.static(path.join(__dirname, 'web/assets')))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use("/api", routes)
@@ -22,7 +22,7 @@ try {
     http.listen(process.env.PORT, '0.0.0.0', () => {
         console.log(`running at localhost:${process.env.PORT}`);
     });
-    
+
 } catch (e) {
 
 }
