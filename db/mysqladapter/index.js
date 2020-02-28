@@ -9,6 +9,25 @@ var connect = () => {
         database: process.env.MYSQL_DATABASE
     });
 }
+mySqlAdapter.Query = (query, options = {}) => {
+    var con = connect();
+
+    return new Promise((resolve, reject) => {
+        con.connect((err, suc) => {
+            if (err) {
+                reject(err);
+            } else {
+                con.query(query, options, (err, result) => {
+                    if (err) reject(err);
+                    else {
+                        resolve(result);
+                    }
+                });
+            }
+        })
+
+    });
+}
 mySqlAdapter.Select = (query, options = {}) => {
     var con = connect();
     

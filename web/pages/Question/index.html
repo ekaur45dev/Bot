@@ -1,26 +1,39 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Question</title>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <script src="/assets/js/jquery.min.js"></script>    
 </head>
 <body>
-    <input type="text" value="" id="question" placeholder="Question" /> <input type="button" value="Add answer" onclick="addAnswer()"/> <input type="button" value="Save" onclick="saveQnA()" />
-    <div id="answers">
-        <input type="text" value=""  placeholder="Answer" name="answer" /><br />
+    <div id="questions">
+        <input type="text" value="" id="question" placeholder="Question" /> <input type="button" value="Add answer" onclick="addAnswer()" /> <input type="button" value="Save" onclick="saveQnA()" />
+        <div id="answers">
+            <input type="text" value="" placeholder="Answer" name="answer" /><br />
+        </div>
+    </div>
+    <div id="result">
     </div>
     <script>
         function addAnswer() {
             var el = '<input type="text" value="" placeholder="Answer" name="answer" /><br />';
-            document.getElementById("answers").appendChild(...document.getElementsByName('answer').item(0));
+            $("#answers").append(el);
+            //document.getElementById("answers").appendChild(...document.getElementsByName('answer').item(0));
         }
         function saveQnA() {
             var requestData = {};
             requestData["question"] = document.getElementById("question").value;
             var inputs = document.getElementsByName('answer');
-            const answers = [].map.call(inputs,function(input){return input.value;})
-
+            const answers = [].map.call(inputs, function (input) { return input.value; });
             requestData["answers"] = answers;
+            $.ajax({
+                method: "POST",
+                url: "/api/question/postqna",
+                data: requestData,
+                success: (data)=>{
+                    alert("Ok");
+                }
+            })
         }
     </script>
 </body>
