@@ -5,14 +5,19 @@ qRouteModule.get('/', (req, res) => {
 });
 qRouteModule.get('/all', (req, res) => {
     qApi.getAll().then(success => {
-        res.send(success);
+        res.status(200).send(
+            {
+                code:200,
+                status:"OK",
+                data:success
+            });
     }).catch(error => {
         res.status(500).send(error);
     });
 });
 qRouteModule.post('/postqna', (req, res) => {
     if (req.body) {
-        qApi.postqna(req.body).then(success => {
+        qApi.postqna(req.body.data).then(success => {
             res.send(success);
         }).catch(error => {
             res.status(500).send(error);

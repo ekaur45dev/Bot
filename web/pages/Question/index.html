@@ -1,20 +1,83 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Question</title>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <script src="/assets/js/jquery.min.js"></script>    
+    <script src="/assets/js/jquery.min.js"></script>
 </head>
+
 <body>
-    <div id="questions">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container">
+        <div class="row">
+            <div class="control-group" id="fields">
+                <div class="controls">
+                    <form role="form" autocomplete="off">
+                        <input type="button" class="btn btn-default" value="Add this Q&A" onclick="addToList()">
+                        <input type="button" class="btn btn-info" value="Save All" onclick="saveQnA()">
+                        <input class="form-control" name="question" id="question" type="text" placeholder="Type something" />
+                        <div class="entry input-group">
+                            <input class="form-control" name="answer" type="text" placeholder="Type something" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-success btn-add" type="button">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                    <br>
+                    <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>
+                </div>
+                <div>
+                    <ul id="list">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="questions">
         <input type="text" value="" id="question" placeholder="Question" /> <input type="button" value="Add answer" onclick="addAnswer()" /> <input type="button" value="Save" onclick="saveQnA()" />
         <div id="answers">
             <input type="text" value="" placeholder="Answer" name="answer" /><br />
         </div>
     </div>
     <div id="result">
-    </div>
+    </div> -->
     <script>
+        var list = [];
+        $(function () {
+
+            $(document).on('click', '.btn-add', function (e) {
+                e.preventDefault();
+
+                var controlForm = $('.controls form:first'),
+                    currentEntry = $(this).parents('.entry:first'),
+                    newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+                newEntry.find('input').val('');
+                controlForm.find('.entry:not(:last) .btn-add')
+                    .removeClass('btn-add').addClass('btn-remove')
+                    .removeClass('btn-success').addClass('btn-danger')
+                    .html('<span class="glyphicon glyphicon-minus"></span>');
+            }).on('click', '.btn-remove', function (e) {
+                $(this).parents('.entry:first').remove();
+
+                e.preventDefault();
+                return false;
+            });
+        });
+        function removeAll() {
+            $(".entry").each(e => {
+                debugger;
+                $(e).remove();
+            })
+        }
         function addAnswer() {
             var el = '<input type="text" value="" placeholder="Answer" name="answer" /><br />';
             $("#answers").append(el);
@@ -29,12 +92,35 @@
             $.ajax({
                 method: "POST",
                 url: "/api/question/postqna",
-                data: requestData,
-                success: (data)=>{
+                contentType:"application/json",
+                data: JSON.stringify({data:list}),
+                success: (data) => {
                     alert("Ok");
                 }
             })
         }
+        function addToList() {
+
+            // let data = $($("form")[0]).serializeArray();
+            let data = {};
+            data["question"]= document.getElementById("question").value;
+            var inputs = document.getElementsByName('answer');
+            const answers = [].map.call(inputs, function (input) { return input.value; });
+            data["answers"] = answers;
+            list.push(data);
+            $('form')[0].reset();
+            debugger;
+            removeAll();
+            var li="<li>\
+                        <span>Q:"+data["question"]+"</span>\
+                        <ul>";
+            data["answers"].forEach((e,i)=>{
+                    li+="<li> A:"+e+"</li>";
+            });
+            li+="</li></ul>";
+            $("#list").append(li);
+        }
     </script>
 </body>
+
 </html>

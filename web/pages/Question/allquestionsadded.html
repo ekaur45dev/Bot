@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Question</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <script src="/assets/js/jquery.min.js"></script>
+</head>
+
+<body>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <div class="container">
+        <div class="row">
+            <div class="control-group" id="fields">
+                <div>
+                    <ul id="list">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    
+      $(document).ready(()=>{
+          getAllQnAs();
+      });
+        function getAllQnAs() {
+            $.get("/api/question/all").then(scuess=>{
+                debugger;
+            });
+            // $.ajax({
+            //     type: "GET",
+            //     url: "/api/question/all"
+            // }).then(sucess=>{
+            //     debugger;
+            // }).progress(p=>{
+            //     debugger;
+            // }).done(data=>{
+            //     debugger;
+            // })
+        }
+        function addToList() {
+
+            // let data = $($("form")[0]).serializeArray();
+            let data = {};
+            data["question"]= document.getElementById("question").value;
+            var inputs = document.getElementsByName('answer');
+            const answers = [].map.call(inputs, function (input) { return input.value; });
+            data["answers"] = answers;
+            list.push(data);
+            $('form')[0].reset();
+            debugger;
+            removeAll();
+            var li="<li>\
+                        <span>Q:"+data["question"]+"</span>\
+                        <ul>";
+            data["answers"].forEach((e,i)=>{
+                    li+="<li> A:"+e+"</li>";
+            });
+            li+="</li></ul>";
+            $("#list").append(li);
+        }
+    </script>
+</body>
+
+</html>
