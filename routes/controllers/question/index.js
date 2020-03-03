@@ -1,11 +1,11 @@
-const userControlerRoutes = require('express').Router();
+const templateRoutes = require('express').Router();
 const path = require('path');
 const pagePath = './web/pages/Question';
 
-userControlerRoutes.get('/', (req, res) => {
+templateRoutes.get('/', (req, res) => {
     res.sendFile(path.resolve(`${pagePath}/index.html`));
 });
-userControlerRoutes.get('/all', (req, res) => {
+templateRoutes.get('/all', (req, res) => {
     res.sendFile(path.resolve(`${pagePath}/allquestionsadded.html`));
 });
-module.exports = userControlerRoutes;
+module.exports = templateRoutes;

@@ -1,23 +1,23 @@
-const qRouteModule = require('express').Router();
-const qApi = require('../../apiController/question');
-qRouteModule.get('/', (req, res) => {
+const tRouteModule = require('express').Router();
+const tApi = require('../../apiController/template');
+tRouteModule.get('/', (req, res) => {
     res.send('Api running...');
 });
-qRouteModule.get('/all', (req, res) => {
-    qApi.getAll().then(success => {
+tRouteModule.get('/all', (req, res) => {
+    tApi.getAll().then(success => {
         res.status(200).send(
             {
-                code:200,
-                status:"OK",
-                data:success
+                code: 200,
+                status: "OK",
+                data: success
             });
     }).catch(error => {
         res.status(500).send(error);
     });
 });
-qRouteModule.post('/postqna', (req, res) => {
+tRouteModule.post('/add-template', (req, res) => {
     if (req.body) {
-        qApi.postqna(req.body.data).then(success => {
+        tApi.addTemplate(req.body).then(success => {
             res.send(success);
         }).catch(error => {
             res.status(500).send(error);
@@ -26,9 +26,9 @@ qRouteModule.post('/postqna', (req, res) => {
         res.status(500).send("Invalid");
     }
 });
-qRouteModule.post('/del-question', (req, res) => {
+tRouteModule.post('/del-template', (req, res) => {
     if (req.body) {
-        qApi.delQ(req.body).then(success => {
+        tApi.delTemplate(req.body).then(success => {
             res.send(success);
         }).catch(error => {
             res.status(500).send(error);
@@ -38,8 +38,8 @@ qRouteModule.post('/del-question', (req, res) => {
     }
 });
 
-qRouteModule.get('**', (req, res) => {
+tRouteModule.get('**', (req, res) => {
     res.send('404');
 });
 
-module.exports = qRouteModule;
+module.exports = tRouteModule;

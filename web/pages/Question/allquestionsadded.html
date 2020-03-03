@@ -12,37 +12,71 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
-
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Brand</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/template">Template</a>
+                    </li>
+                    <!--<li>
+                        <a href="#">Link</a>
+                    </li>
+                    <li>
+                        <a href="#">Link</a>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
             <div class="control-group" id="fields">
-                <div>
-                    <ul id="list">
-                    </ul>
+                <div id="list">
                 </div>
             </div>
         </div>
     </div>
     <script>
-
+        var urlBase = "/api/question/";
         $(document).ready(() => {
             getAllQnAs();
         });
         function getAllQnAs() {
             $.get("/api/question/all").then(scuess => {
-                debugger
-                var li = "";
-                var keys = Object.keys(scuess.data);
-                keys.forEach(key => {
-                    li += "<li>\
-                                    <span>Q:"+ key + "</span>\
-                                        <ul>";
-                    scuess.data[key].forEach(val => {
-                        li += "<li> A:" + val + "</li>";
-                    });
-                        li += "</li></ul>";
+                var data = scuess.data;
+                var table = `<table class='table table-hover' ><tr><th>Question</th><th>Answer</th><th>Action</th></tr>`;
+                data.forEach(el => {
+                table += `<tr><td>${el.name}</td><td>${el.answer}</td><td><a>Delete</a></td></tr>`;
                 });
-                $("#list").append(li);
+                table += `</table>`;
+                $("#list").append(table);
+                //debugger
+                //var li = "";
+                //var keys = Object.keys(scuess.data);
+                //keys.forEach(key => {
+                //    li += "<li>\
+                //            <span>Q:"+ key + "</span>\
+                //            <button onclick=\"deleteQ('"+ key + "')\">Delete q</button>\
+                //            <ul>";
+                //    scuess.data[key].forEach(val => {
+                //        li += "<li> A:" + val + "</li>";
+                //    });
+                //    li += "</li></ul>";
+                //});
+                //$("#list").append(li);
             });
             // $.ajax({
             //     type: "GET",
@@ -65,16 +99,33 @@
             data["answers"] = answers;
             list.push(data);
             $('form')[0].reset();
-            debugger;
             removeAll();
-            var li = "<li>\
-                            <span>Q:"+ data["question"] + "</span>\
-                            <ul>";
-            data["answers"].forEach((e, i) => {
-                li += "<li> A:" + e + "</li>";
+
+
+            //var li = "<li>\
+            //                        <span>Q:"+ data["question"] + "</span>\
+            //                        <ul>";
+            //data["answers"].forEach((e, i) => {
+            //    li += "<li> A:" + e + "</li>";
+            //});
+            //li += "</li></ul>";
+            //$("#list").append(li);
+        }
+        function deleteQ(key) {
+            var data = JSON.stringify({ key: key });
+            $.ajax({
+                method: "POST",
+                url: urlBase + "del-question",
+                contentType: "application/json",
+                data: data,
+                success: (data) => {
+                    getAllQnAs();
+                    alert("Ok");
+                },
+                error: () => {
+                    alert("Error");
+                }
             });
-            li += "</li></ul>";
-            $("#list").append(li);
         }
     </script>
 </body>

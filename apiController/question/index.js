@@ -10,12 +10,15 @@ questionModule.getAll = () => {
         mysql.Select("call GetAllQnA()").then(result => {
             if (result[0]["length"] > 0) {
                 var re = result[0];
-                var req_res = re.reduce(function (obj, item) {
-                    obj[item.name] = obj[item.name] || [];
-                    obj[item.name].push(item.answer);
-                    return obj;
-                }, {});
-                resolve(req_res);
+                resolve(re);
+                //var req_res = re.reduce(function (obj, item) {
+                //    obj["question"] = [];
+                //    obj["question"]
+                //    obj[item.name] = obj[item.name] || [];
+                //    obj[item.name].push(item.answer);
+                //    return obj;
+                //}, {});
+                //resolve(req_res);
             } else {
                 reject("No Data");
             }
@@ -72,6 +75,17 @@ questionModule.postqna = (data) => {
         //}).catch(err=>{
         //    reject(err);
         //});
+    });
+}
+
+questionModule.delQ = (data) => {
+    return new Promise((resolve, reject) => {
+        var query = `delete from question where name='${data.name}'`;
+        mysql.Select(query).then(suc => {
+            resolve("deleted");
+        }).catch(re => {
+            reject(re);
+        });
     });
 }
 
