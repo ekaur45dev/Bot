@@ -44,6 +44,11 @@
     <div class="container">
         <div class="row">
             <div class="control-group" id="fields">
+                <div class="row">
+                    <label>Template</label>
+                    <div id="select"></div>
+                </div>
+            </br>
                 <div id="list">
                 </div>
             </div>
@@ -52,46 +57,34 @@
     <script>
         var urlBase = "/api/question/";
         $(document).ready(() => {
+            getAllTemplates();
             getAllQnAs();
         });
+        $('select').on('change', function() {
+  alert( this.value );
+});
+
         function getAllQnAs() {
+            debugger;
             $.get("/api/question/all").then(scuess => {
-                var data = scuess.data;
+                debugger;
+                // var data = scuess.data;
+                // Data Filtering
+                var templateId = $("#tempSel").val();
+                var data = $.grep(scuess.data, function( n, i ) {
+  return n.tempId===parseInt(templateId);
+});
+                
                 var table = `<table class='table table-hover' ><tr><th>Question</th><th>Answer</th><th>Action</th></tr>`;
                 data.forEach(el => {
-                table += `<tr><td>${el.name}</td><td>${el.answer}</td><td><a>Delete</a></td></tr>`;
+                table += `<tr><td>${el.name}</td><td>${el.answer}</td><td><a onClick="deleteQ(` + el.QId + `)">Delete</a></td></tr>`;
                 });
                 table += `</table>`;
+                $("#list").empty();
                 $("#list").append(table);
-                //debugger
-                //var li = "";
-                //var keys = Object.keys(scuess.data);
-                //keys.forEach(key => {
-                //    li += "<li>\
-                //            <span>Q:"+ key + "</span>\
-                //            <button onclick=\"deleteQ('"+ key + "')\">Delete q</button>\
-                //            <ul>";
-                //    scuess.data[key].forEach(val => {
-                //        li += "<li> A:" + val + "</li>";
-                //    });
-                //    li += "</li></ul>";
-                //});
-                //$("#list").append(li);
             });
-            // $.ajax({
-            //     type: "GET",
-            //     url: "/api/question/all"
-            // }).then(sucess=>{
-            //     debugger;
-            // }).progress(p=>{
-            //     debugger;
-            // }).done(data=>{
-            //     debugger;
-            // })
         }
         function addToList() {
-
-            // let data = $($("form")[0]).serializeArray();
             let data = {};
             data["question"] = document.getElementById("question").value;
             var inputs = document.getElementsByName('answer');
@@ -100,16 +93,6 @@
             list.push(data);
             $('form')[0].reset();
             removeAll();
-
-
-            //var li = "<li>\
-            //                        <span>Q:"+ data["question"] + "</span>\
-            //                        <ul>";
-            //data["answers"].forEach((e, i) => {
-            //    li += "<li> A:" + e + "</li>";
-            //});
-            //li += "</li></ul>";
-            //$("#list").append(li);
         }
         function deleteQ(key) {
             var data = JSON.stringify({ key: key });
@@ -127,6 +110,31 @@
                 }
             });
         }
+        function getAllTemplates() {
+            $.ajax({
+                method: "GET",
+                url: "/api/template/all",
+                contentType: "application/json",
+                success: (data) => {
+                    data = data.data;
+                    var html = "<select id='tempSel' onchange='getTemplate(this);' class='form-control' style='width:160px;'>";
+                    data.forEach((el, ndx, arr) => {
+                        html += "<option value=" + el.id + ">" + el.name + "</option>";
+                    });
+                    html += "</select>";
+                    $("#select").html(html);
+                    html = "";
+                },
+                error: () => {
+                    alert("Error");
+                }
+            });
+        }
+        function getTemplate(sel)
+{
+    getAllQnAs();
+}
+
     </script>
 </body>
 

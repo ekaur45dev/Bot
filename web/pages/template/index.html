@@ -31,23 +31,27 @@
                     <li class="active">
                         <a href="/template">Template</a>
                     </li>
-                    <!--<li>
-                        <a href="#">Link</a>
-                    </li>
-                    <li>
-                        <a href="#">Link</a>
-                    </li>-->
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container">
-        <div class="row">
+        <form class="form-inline">
+            <h4>Add Template</h4>   
+            <hr>
+            <div class="form-group">
+              <label for="template">Template Name:</label>
+              <input type="text" name="template" value="" id="tName" placeholder="Name" />
+            </div>
+            <button type="submit" class="btn btn-default" onclick="addTemplate()">Add</button>
+          </form>
+        <!-- <div class="row">
             <div class="col-md-12">
                 <input type="text" name="template" value="" id="tName" placeholder="Template name" />
                 <input type="button" name="name" value="Add template" onclick="addTemplate()" />
             </div>
-        </div>
+        </div> -->
+    </br>
         <div class="row">
             <div class="col-md-12">
                 <div id="allTemplate">
@@ -86,15 +90,20 @@
                 contentType: "application/json",
                 success: (data) => {
                     debugger;
-                    console.log(data);
                     data = data.data;
-                    var html = "<ul>";
-                    data.forEach((el, ndx, arr) => {
-                        html += "<li>" + el.name + "<button onclick=deleteT('" + el.id + "')>Delete</button></li>";
-                    });
-                    html += "</ul>";
-                    $("#allTemplate").html(html);
-                    html = "";
+                    // var html = "<ul>";
+                    // data.forEach((el, ndx, arr) => {
+                    //     html += "<li>" + el.name + "<button onclick=deleteT('" + el.id + "')>Delete</button></li>";
+                    // });
+                    // html += "</ul>";
+                    var table = `<table class='table table-hover' ><tr><th>Template Name</th><th>Action</th></tr>`;
+                data.forEach(el => {
+                table += `<tr><td>${el.name}</td><td><a onClick="deleteT(` + el.id + `)">Delete</a></td></tr>`;
+                });
+                table += `</table>`;
+                $("#allTemplate").empty();
+                    $("#allTemplate").html(table);
+                    table = "";
                 },
                 error: () => {
                     alert("Error");

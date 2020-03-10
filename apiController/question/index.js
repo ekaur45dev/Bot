@@ -32,7 +32,7 @@ questionModule.postqna = (data) => {
     return new Promise((resolve, reject) => {
         var curOut = 1;
         async.forEach(data, (value, key, callback) => {
-            var query = "call bot_db.insertQuestion('" + value["question"] + "');";
+            var query = "call bot_db.insertQuestion_V1('" + value["question"] + "','" + value["temp"] + "');";
             mysql.InsertUpdateDelete(query).then(result => {
                 var id = result[0][0]["id"];
                 var curIn = 1;
@@ -80,7 +80,7 @@ questionModule.postqna = (data) => {
 
 questionModule.delQ = (data) => {
     return new Promise((resolve, reject) => {
-        var query = `delete from question where name='${data.name}'`;
+        var query = `delete from question where id='${data.key}'`;
         mysql.Select(query).then(suc => {
             resolve("deleted");
         }).catch(re => {
