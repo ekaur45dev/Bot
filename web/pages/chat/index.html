@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title></title>
@@ -301,7 +301,7 @@
                 success: (data) => {
                     if (data.code == 200) {
                         if (data.data.length > 0) {
-                            addMessage(data.data[0].answer);
+                            addMessage(data.data[Math.floor(Math.random() * data.data.length)].answer);
                         } else {
                             addMessage("Sorry! I cannot understand that.");
                         }

@@ -1,3 +1,4 @@
+var _mysql = require("mysql");
 const mysql = require("./../../db/mysqladapter");
 var async = require("async");
 var chatModule = {};
@@ -6,7 +7,8 @@ chatModule.getAns = (data) => {
         if (!(data.q&&data.tid)) {
             reject("Please provide both question and template.");
         } else {
-            mysql.Select(`select * from question q join answer a on a.QId=q.id where q.tempId=${data.tid} and q.name='${data.q}'`).then(
+
+            mysql.Select(`select * from question q join answer a on a.QId=q.id where q.tempId=${data.tid} and q.name=?`, [data.q]).then(
                 suc => {
                     if (suc.length > 0) {
                         resolve(suc);
