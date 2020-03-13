@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
     <title></title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
 
 
@@ -136,7 +139,7 @@
         .incoming_msg_img {
             display: inline-block;
             width: 50px;
-            height:50px;
+            height: 50px;
         }
 
         .received_msg {
@@ -233,7 +236,32 @@
     <script src="/assets/js/jquery.min.js"></script>
 </head>
 <body>
-
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Brand</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/template">Template</a>
+                    </li>
+                    <li class="active">
+                        <a href="/chat">Chat Bot</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="mesgs">
         <div class="row">
             <div class="col-sm-12 form-group">
@@ -256,11 +284,11 @@
             getAllTemplates();
             addMessage("Hi! How can I help you?");
         });
-      function  handleKeyDown(event){
-          if (event.key == "Enter") {
-              event.preventDefault();
-              answer();
-          }
+        function handleKeyDown(event) {
+            if (event.key == "Enter") {
+                event.preventDefault();
+                answer();
+            }
         }
         function getAllTemplates() {
             $.ajax({
@@ -289,7 +317,7 @@
             addMessage(msg, "out");
             $("#msg").val('');
         }
-        function getQuestion(_msg,_t) {
+        function getQuestion(_msg, _t) {
             let requestData = {};
             requestData["q"] = _msg;
             requestData["tid"] = _t;
@@ -313,25 +341,25 @@
         }
         function addMessage(msg, type) {
             let msgs = `<div class="incoming_msg">
-                        <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                        <div class="received_msg">
-                            <div class="received_withd_msg">
-                                <p>${msg}</p>
-                                <!--<span class="time_date"> 11:01 AM    |    June 9</span>-->
-                            </div>
-                        </div>
-                    </div>`;
-            if (type == "out") {
-                msgs = `<div class="outgoing_msg">
-                            <div class="sent_msg">
-                                <p>${msg}</p>
-                                <!--<span class="time_date"> 11:01 AM    |    June 9</span>-->
+                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>${msg}</p>
+                                    <!--<span class="time_date"> 11:01 AM    |    June 9</span>-->
+                                </div>
                             </div>
                         </div>`;
+            if (type == "out") {
+                msgs = `<div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>${msg}</p>
+                                    <!--<span class="time_date"> 11:01 AM    |    June 9</span>-->
+                                </div>
+                            </div>`;
             }
-            
+
             $(".msg_history").append(msgs);
-            $(".msg_history").animate({ scrollTop: $(".msg_history")[0].scrollHeight  }, "slow");
+            $(".msg_history").animate({ scrollTop: $(".msg_history")[0].scrollHeight }, "slow");
         }
     </script>
 </body>
